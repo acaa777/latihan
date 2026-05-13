@@ -811,78 +811,81 @@ footer p {
 
 @media (max-width: 600px) {
   nav {
-    padding: 0.75rem 2.5%;
+    padding: 0.65rem 2.2%;
     justify-content: space-between;
-    gap: 10px;
+    gap: 8px;
   }
 
   .logo-text {
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .main-logo {
-    height: 34px;
-    width: 34px;
+    height: 32px;
+    width: 32px;
   }
 
   .nav-links {
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
   }
 
   .nav-links a {
     text-align: center;
-    font-size: 0.85rem;
-    padding: 10px 0;
+    font-size: 0.8rem;
+    padding: 8px 0;
   }
 
   header {
     height: auto;
-    min-height: 65vh;
-    padding: 0 3%;
+    min-height: 58vh;
+    padding: 1rem 3%;
   }
 
   .hero-tag {
     font-size: 0.75rem;
-    letter-spacing: 2px;
-    margin-bottom: 16px;
+    letter-spacing: 1.5px;
+    margin-bottom: 14px;
   }
 
   .hero-content h1 {
-    font-size: 2rem;
+    font-size: 1.9rem;
     line-height: 1.2;
+    margin-bottom: 18px;
   }
 
   .hero-content p {
     font-size: 0.95rem;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
+    max-width: 100%;
   }
 
   .btn-main {
     padding: 12px 18px;
     font-size: 0.95rem;
+    width: fit-content;
   }
 
   #about,
   #jobs,
   #contact,
   .admin-main-wrapper {
-    padding: 50px 3%;
+    padding: 45px 3%;
   }
 
   .contact-card-main h2 {
-    font-size: 1.8rem;
+    font-size: 1.7rem;
   }
 
   .contact-links-grid {
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
   }
 
   .contact-links-grid a {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .about-flex-container,
@@ -891,7 +894,7 @@ footer p {
   }
 
   .about-text-content h2 {
-    font-size: 2rem;
+    font-size: 1.9rem;
   }
 
   .about-features-list,
@@ -905,17 +908,17 @@ footer p {
   }
 
   .job-card-item {
-    padding: 22px;
+    padding: 20px;
   }
 
   .btn-card-apply {
-    padding: 14px;
-    font-size: 0.95rem;
+    padding: 13px;
+    font-size: 0.9rem;
   }
 
   .modal-content-box {
     max-width: 95%;
-    padding: 18px;
+    padding: 16px;
   }
 
   .modal-form-grid {
