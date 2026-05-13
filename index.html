@@ -22,6 +22,11 @@
         <span class="logo-text">JBTB<span class="gold-text">CASTING</span></span>
     </a>
 </div>
+        <button class="nav-toggle" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
         <ul class="nav-links">
           <li><a href="#home">Home</a></li>
           <li><a href="#about">History</a></li>
@@ -147,6 +152,22 @@ document.addEventListener('keydown', function(e) {
         accessAdmin();
     }
 });
+
+        const navToggle = document.querySelector('.nav-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (navToggle && navLinks) {
+          navToggle.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+          });
+
+          document.addEventListener('click', function(event) {
+            if (!event.target.closest('nav') && navLinks.classList.contains('active')) {
+              navLinks.classList.remove('active');
+            }
+          });
+        }
+
         // Update fungsi refreshTable khusus di bagian Aksi Kelola
         function refreshTable() {
           const data = JSON.parse(localStorage.getItem("jbtb_data"));
