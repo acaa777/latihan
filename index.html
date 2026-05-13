@@ -300,10 +300,10 @@ document.addEventListener('keydown', function(e) {
         <div class="admin-table-overflow">
           
     <!-- Tombol Aksi Massal -->
-    <div id="massActions" style="display: none; margin: 15px 0; gap: 10px;">
-        <button onclick="bulkAction('Accepted')" class="btn-action-check" style="width: auto; padding: 10px;">Terima Terpilih</button>
-        <button onclick="bulkAction('Rejected')" class="btn-action-reject" style="width: auto; padding: 10px;">Tolak Terpilih</button>
-        <button onclick="bulkAction('Delete')" class="btn-action-delete" style="width: auto; padding: 10px;">Hapus Terpilih</button>
+    <div id="massActions" style="display: none; margin: 15px 0; gap: 10px; flex-wrap: wrap;">
+        <button onclick="bulkAction('Accepted')" class="btn-mass-action btn-mass-accept">Terima Terpilih</button>
+        <button onclick="bulkAction('Rejected')" class="btn-mass-action btn-mass-reject">Tolak Terpilih</button>
+        <button onclick="bulkAction('Delete')" class="btn-mass-action btn-mass-delete">Hapus Terpilih</button>
     </div>
 
     <table class="admin-data-table">
@@ -418,7 +418,7 @@ document.addEventListener('keydown', function(e) {
         const container = document.getElementById("job-list-display");
         container.innerHTML = jobs
           .map(
-            (j) => `
+            (j, idx) => `
             <div class="job-card-item">
                 <div class="job-badge-tag">Open</div>
                 <h3>${j.title}</h3>
@@ -428,13 +428,23 @@ document.addEventListener('keydown', function(e) {
                 <ul class="job-requirement-list">
                     ${j.req.slice(0, 3).map((r) => `<li><i class="fas fa-check"></i> ${r}</li>`).join("")}
                 </ul>
-                <button onclick="openModal('${j.title}', '${j.desc || ''}')" class="btn-card-apply">
+                <button class="btn-card-apply" data-job-index="${idx}">
                     Lamar Sekarang
                 </button>
             </div>
         `,
           )
           .join("");
+        
+        // Attach event listeners to all job buttons
+        document.querySelectorAll('.btn-card-apply').forEach(btn => {
+          btn.addEventListener('click', function() {
+            const jobIndex = this.getAttribute('data-job-index');
+            const jobs = JSON.parse(localStorage.getItem("jbtb_jobs"));
+            const job = jobs[jobIndex];
+            openModal(job.title, job.desc || "");
+          });
+        });
       }
 
     function renderAdminJobs() {

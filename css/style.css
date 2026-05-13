@@ -417,6 +417,43 @@ header {
   cursor: pointer;
 }
 
+.btn-mass-action {
+  border: none;
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-mass-accept {
+  background: #2ecc71;
+}
+
+.btn-mass-accept:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
+}
+
+.btn-mass-reject {
+  background: #f39c12;
+}
+
+.btn-mass-reject:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+}
+
+.btn-mass-delete {
+  background: var(--red-danger);
+}
+
+.btn-mass-delete:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+}
+
 .admin-main-wrapper {
   padding: 50px 8%;
 }
@@ -720,6 +757,17 @@ footer p {
   font-size: 1.6rem;
   margin-bottom: 20px;
   color: #fff;
+}
+
+.job-description {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: var(--gray-text);
+  font-size: 0.95rem;
+  border-left: 4px solid var(--gold);
 }
 
 .modal-form-grid {
