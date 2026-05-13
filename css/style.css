@@ -195,12 +195,12 @@ header {
   border-radius: 50px;
   cursor: pointer;
   transition: 0.3s;
-  box-shadow: 0 5px 15px rgba(201, 162, 39, 0.2);
+  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.2);
 }
 
 .btn-main:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(201, 162, 39, 0.4);
+  box-shadow: 0 15px 30px rgba(40, 167, 69, 0.4);
   animation: none;
 }
 
@@ -282,7 +282,7 @@ header {
 
 .stat-card-box:hover {
   transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 10px 30px rgba(201, 162, 39, 0.2);
+  box-shadow: 0 10px 30px rgba(40, 167, 69, 0.2);
   border-color: var(--gold);
 }
 
@@ -343,14 +343,14 @@ header {
 
 .job-card-item:hover {
   transform: translateY(-10px);
-  box-shadow: 0 20px 40px rgba(201, 162, 39, 0.15);
+  box-shadow: 0 20px 40px rgba(40, 167, 69, 0.15);
 }
 
 .job-badge-tag {
   position: absolute;
   top: 20px;
   right: 20px;
-  background: rgba(201, 162, 39, 0.1);
+  background: rgba(40, 167, 69, 0.1);
   color: var(--gold);
   padding: 4px 12px;
   border-radius: 15px;
@@ -391,7 +391,7 @@ header {
 
 .btn-card-apply:hover {
   transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(201, 162, 39, 0.3);
+  box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
 }
 
 .btn-card-apply:active {
@@ -470,7 +470,7 @@ header {
 .form-group-item textarea:focus {
   outline: none;
   border-color: var(--gold);
-  box-shadow: 0 0 15px rgba(201, 162, 39, 0.2);
+  box-shadow: 0 0 15px rgba(40, 167, 69, 0.2);
   transform: scale(1.02);
 }
 
@@ -519,7 +519,7 @@ header {
 .admin-loker-card:hover {
   background: #1a1f28;
   transform: translateX(10px);
-  box-shadow: 0 10px 20px rgba(201, 162, 39, 0.1);
+  box-shadow: 0 10px 20px rgba(40, 167, 69, 0.1);
 }
 
 .loker-text {
@@ -592,7 +592,7 @@ header {
 }
 
 .admin-data-table tbody tr:hover {
-  background: rgba(201, 162, 39, 0.1);
+  background: rgba(40, 167, 69, 0.1);
   transform: scale(1.01);
 }
 
@@ -607,7 +607,7 @@ header {
   color: white;
   width: 35px;
   height: 35px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   align-items: center;
