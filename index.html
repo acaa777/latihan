@@ -219,13 +219,13 @@ document.addEventListener('keydown', function(e) {
         }
 
         // Fungsi tambahan untuk status Rejected (agar tombol tolak bekerja)
-        function updateApplicantStatus(id, newStatus) {
-          let list = JSON.parse(localStorage.getItem("jbtb_data"));
-          list = list.map((i) =>
-            i.id === id ? { ...i, status: newStatus } : i,
-          );
-          localStorage.setItem("jbtb_data", JSON.stringify(list));
-          refreshTable();
+        async function updateApplicantStatus(id, newStatus) {
+          try {
+            await updateApplicantStatusDB(id, newStatus);
+            await refreshTable();
+          } catch (error) {
+            console.error("Error updating status:", error);
+          }
         }
       </script>
 
@@ -413,12 +413,12 @@ document.addEventListener('keydown', function(e) {
       }
 
       // --- RENDER FUNCTIONS ---
-      function renderFrontJobs() {
-        const jobs = JSON.parse(localStorage.getItem("jbtb_jobs"));
+      async function renderFrontJobs() {
+        const jobs = await getJobsFromDB();
         const container = document.getElementById("job-list-display");
         container.innerHTML = jobs
           .map(
-            (j, idx) => `
+            (j) => `
             <div class="job-card-item">
                 <div class="job-badge-tag">Open</div>
                 <h3>${j.title}</h3>
@@ -426,9 +426,12 @@ document.addEventListener('keydown', function(e) {
                     <i class="fas fa-coins"></i> ${j.rate}
                 </div>
                 <ul class="job-requirement-list">
-                    ${j.req.slice(0, 3).map((r) => `<li><i class="fas fa-check"></i> ${r}</li>`).join("")}
+                    ${(j.req || j.requirements.split(","))
+                      .slice(0, 3)
+                      .map((r) => `<li><i class="fas fa-check"></i> ${typeof r === 'string' ? r.trim() : r}</li>`)
+                      .join("")}
                 </ul>
-                <button class="btn-card-apply" data-job-index="${idx}">
+                <button class="btn-card-apply" data-job-id="${j.id}">
                     Lamar Sekarang
                 </button>
             </div>
@@ -438,17 +441,19 @@ document.addEventListener('keydown', function(e) {
         
         // Attach event listeners to all job buttons
         document.querySelectorAll('.btn-card-apply').forEach(btn => {
-          btn.addEventListener('click', function() {
-            const jobIndex = this.getAttribute('data-job-index');
-            const jobs = JSON.parse(localStorage.getItem("jbtb_jobs"));
-            const job = jobs[jobIndex];
-            openModal(job.title, job.desc || "");
+          btn.addEventListener('click', async function() {
+            const jobId = this.getAttribute('data-job-id');
+            const jobs = await getJobsFromDB();
+            const job = jobs.find(j => j.id == jobId);
+            if (job) {
+              openModal(job.title, job.description || job.desc || "");
+            }
           });
         });
       }
 
-    function renderAdminJobs() {
-        const jobs = JSON.parse(localStorage.getItem('jbtb_jobs'));
+    async function renderAdminJobs() {
+        const jobs = await getJobsFromDB();
         const container = document.getElementById('admin-job-list');
         container.innerHTML = jobs.map(j => `
             <div class="admin-loker-card">
@@ -456,15 +461,16 @@ document.addEventListener('keydown', function(e) {
                     <strong>${j.title}</strong>
                     <span class="loker-rate-text">${j.rate}</span>
                 </div>
-                <button onclick="deleteJob(${j.id})" class="btn-loker-delete" title="Hapus Lowongan">
+                <button onclick="deleteJobAsync(${j.id})" class="btn-loker-delete" title="Hapus Lowongan">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
         `).join('');
     }
 
-      function refreshTable() {
-    const data = JSON.parse(localStorage.getItem("jbtb_data")) || [];
+      async function refreshTable() {
+    // Ambil data dari Supabase (otomatis fallback ke localStorage jika error)
+    const data = await getApplicantsFromDB();
     const tbody = document.getElementById("table-body");
     if (!tbody) return;
 
@@ -485,13 +491,13 @@ document.addEventListener('keydown', function(e) {
                     </a>
                 </div>
             </td>
-            <td><span class="job-label-tag">${item.job}</span></td>
+            <td><span class="job-label-tag">${item.job_applied || item.job}</span></td>
             <td>
                 <div class="file-cell">
-                    <a href="${item.photo}" target="_blank" class="btn-view-file">
+                    <a href="${item.photo_link || item.photo}" target="_blank" class="btn-view-file">
                         <i class="fas fa-image"></i> Foto
                     </a>
-                    <a href="${item.porto}" target="_blank" class="btn-view-file porto">
+                    <a href="${item.portfolio_link || item.porto}" target="_blank" class="btn-view-file porto">
                         <i class="fas fa-video"></i> Porto
                     </a>
                 </div>
@@ -513,50 +519,6 @@ document.addEventListener('keydown', function(e) {
         </tr>
     `).join("");
 }
-
-// Update fungsi Bulk Action agar mencari ID yang benar
-function bulkAction(actionType) {
-    const selected = document.querySelectorAll('.rowCheckbox:checked');
-    
-    // 1. Ambil data terbaru dari localStorage
-    let list = JSON.parse(localStorage.getItem('jbtb_data')) || [];
-    
-    if (selected.length === 0) {
-        alert("Pilih pelamar terlebih dahulu!");
-        return;
-    }
-
-    if (confirm(`Apakah Anda yakin ingin melakukan aksi "${actionType}" ke ${selected.length} pelamar?`)) {
-        // 2. Ambil semua ID yang dicentang dan pastikan tipenya String/Number sesuai data
-        const selectedIds = Array.from(selected).map(cb => cb.getAttribute('data-id'));
-
-        if (actionType === 'Delete') {
-            // Filter data yang TIDAK ada di daftar ID terpilih
-            list = list.filter(item => !selectedIds.includes(String(item.id)));
-        } else {
-            // Update status untuk ID yang terpilih
-            list = list.map(item => {
-                if (selectedIds.includes(String(item.id))) {
-                    return { ...item, status: actionType };
-                }
-                return item;
-            });
-        }
-
-        // 3. Simpan kembali ke localStorage
-        localStorage.setItem('jbtb_data', JSON.stringify(list));
-        
-        // 4. Update tampilan tabel secara langsung
-        refreshTable(); 
-        
-        // 5. Reset UI
-        const selectAllCb = document.getElementById('selectAll');
-        if(selectAllCb) selectAllCb.checked = false;
-        toggleMassActionMenu();
-        
-        console.log("Data berhasil diupdate ke status:", actionType);
-    }
-}
       
       // --- LOGIC FUNCTIONS ---
       function openModal(jobTitle, jobDesc) {
@@ -573,49 +535,66 @@ function bulkAction(actionType) {
         document.getElementById("applyModal").style.display = "none";
       }
 
-      function updateApplicantStatus(id, newStatus) {
-        let list = JSON.parse(localStorage.getItem("jbtb_data"));
-        list = list.map((i) => (i.id === id ? { ...i, status: newStatus } : i));
-        localStorage.setItem("jbtb_data", JSON.stringify(list));
-        refreshTable();
+      async function updateApplicantStatus(id, newStatus) {
+        try {
+          await updateApplicantStatusDB(id, newStatus);
+          await refreshTable();
+        } catch (error) {
+          console.error("Error updating status:", error);
+          alert("Gagal mengupdate status pelamar!");
+        }
       }
 
-      function deleteApplicantData(id) {
+      async function deleteApplicantData(id) {
         if (confirm("Hapus permanen data pelamar ini?")) {
-          let list = JSON.parse(localStorage.getItem("jbtb_data")).filter(
-            (i) => i.id !== id,
-          );
-          localStorage.setItem("jbtb_data", JSON.stringify(list));
-          refreshTable();
+          try {
+            await deleteApplicantFromDB(id);
+            await refreshTable();
+          } catch (error) {
+            console.error("Error deleting applicant:", error);
+            alert("Gagal menghapus data pelamar!");
+          }
         }
       }
 
-      function deleteJob(id) {
+      async function deleteJobAsync(id) {
         if (confirm("Hapus lowongan ini dari halaman utama?")) {
-          let jobs = JSON.parse(localStorage.getItem("jbtb_jobs")).filter(
-            (j) => j.id !== id,
-          );
-          localStorage.setItem("jbtb_jobs", JSON.stringify(jobs));
-          renderAdminJobs();
-          renderFrontJobs();
+          await deleteJobFromDB(id);
+          await renderAdminJobs();
+          await renderFrontJobs();
         }
       }
 
-      document.getElementById("lokerForm").onsubmit = function (e) {
+      // Legacy function name for compatibility
+      function deleteJob(id) {
+        deleteJobAsync(id);
+      }
+
+      document.getElementById("lokerForm").onsubmit = async function (e) {
         e.preventDefault();
-        const jobs = JSON.parse(localStorage.getItem("jbtb_jobs"));
-        jobs.push({
-          id: Date.now(),
+        
+        const jobData = {
           title: document.getElementById("job-title").value,
           rate: document.getElementById("job-rate").value,
-          req: document.getElementById("job-req").value.split(","),
-          desc: document.getElementById("job-desc").value,
-        });
-        localStorage.setItem("jbtb_jobs", JSON.stringify(jobs));
-        this.reset();
-        renderAdminJobs();
-        renderFrontJobs();
-        alert("Lowongan Berhasil Dipublikasikan!");
+          requirements: document.getElementById("job-req").value,
+          description: document.getElementById("job-desc").value,
+        };
+        
+        if (!jobData.title || !jobData.rate || !jobData.requirements) {
+          alert("Harap isi semua field lowongan!");
+          return;
+        }
+        
+        try {
+          await addJobToDB(jobData);
+          this.reset();
+          await renderAdminJobs();
+          await renderFrontJobs();
+          alert("Lowongan Berhasil Dipublikasikan!");
+        } catch (error) {
+          console.error("Error saat menambah lowongan:", error);
+          alert("Gagal menambah lowongan!");
+        }
       };
 
       document.getElementById("castingForm").onsubmit = async function (e) {
@@ -661,13 +640,13 @@ function bulkAction(actionType) {
         }
       };
 
-      function accessAdmin() {
+      async function accessAdmin() {
         const pass = prompt("Masukkan Password Admin:");
         if (pass === "123") {
           document.getElementById("main-site").style.display = "none";
           document.getElementById("admin-dashboard").style.display = "block";
-          renderAdminJobs();
-          refreshTable();
+          await renderAdminJobs();
+          await refreshTable();
         } else {
           alert("Password Salah!");
         }
@@ -694,40 +673,39 @@ function toggleMassActionMenu() {
     }
 }
 
-// 3. Fungsi Aksi Massal (Sudah Diperbaiki Logikanya)
-function bulkAction(actionType) {
+// 3. Fungsi Aksi Massal (Sudah Diperbaiki Logikanya - Menggunakan Supabase)
+async function bulkAction(actionType) {
     const selectedCheckboxes = document.querySelectorAll('.rowCheckbox:checked');
-    let listTalent = JSON.parse(localStorage.getItem('jbtb_data')) || [];
     
     if (selectedCheckboxes.length === 0) return;
 
     const confirmMsg = `Apakah Anda yakin ingin melakukan aksi "${actionType}" ke ${selectedCheckboxes.length} pelamar?`;
     
     if (confirm(confirmMsg)) {
-        // Ambil semua ID yang dipilih (Konversi ke String agar aman)
-        const selectedIds = Array.from(selectedCheckboxes).map(cb => String(cb.getAttribute('data-id')));
+        // Ambil semua ID yang dipilih
+        const selectedIds = Array.from(selectedCheckboxes).map(cb => parseInt(cb.getAttribute('data-id')));
 
-        if (actionType === 'Delete') {
-            // Hapus data yang ID-nya ada di list terpilih
-            listTalent = listTalent.filter(item => !selectedIds.includes(String(item.id)));
-        } else {
-            // Update status (Accepted/Rejected) untuk ID terpilih
-            listTalent = listTalent.map(item => {
-                if (selectedIds.includes(String(item.id))) {
-                    return { ...item, status: actionType };
-                }
-                return item;
-            });
+        try {
+            if (actionType === 'Delete') {
+                // Hapus data menggunakan Supabase
+                await bulkDeleteFromDB(selectedIds);
+            } else {
+                // Update status (Accepted/Rejected) menggunakan Supabase
+                await bulkUpdateStatusDB(selectedIds, actionType);
+            }
+
+            // Refresh tabel dan reset UI
+            await refreshTable();
+            
+            const selectAllCb = document.getElementById('selectAll');
+            if (selectAllCb) selectAllCb.checked = false;
+            toggleMassActionMenu();
+            
+            alert(`Aksi "${actionType}" berhasil dilakukan ke ${selectedIds.length} pelamar!`);
+        } catch (error) {
+            console.error("Error bulk action:", error);
+            alert("Gagal melakukan aksi bulk!");
         }
-
-        // Simpan dan Refresh
-        localStorage.setItem('jbtb_data', JSON.stringify(listTalent));
-        refreshTable(); // Gunakan refreshTable yang sudah ada di atas
-        
-        // Reset UI
-        const selectAllCb = document.getElementById('selectAll');
-        if (selectAllCb) selectAllCb.checked = false;
-        toggleMassActionMenu();
     }
 }
 
