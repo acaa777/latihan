@@ -776,3 +776,123 @@ footer p {
 .admin-link {
   display: none !important;
 }
+
+/* RESPONSIVE: Tablet dan HP */
+@media (max-width: 900px) {
+  nav {
+    padding: 1rem 4%;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .hero-content {
+    max-width: 100%;
+  }
+
+  .hero-content h1 {
+    font-size: 3rem;
+  }
+
+  .hero-content p {
+    max-width: 100%;
+  }
+
+  .btn-main,
+  .btn-card-apply {
+    width: 100%;
+  }
+
+  #about,
+  #jobs,
+  #contact,
+  .admin-main-wrapper {
+    padding: 70px 4%;
+  }
+
+  .about-flex-container,
+  .contact-links-grid,
+  .admin-loker-card {
+    gap: 20px;
+  }
+
+  .job-card-item {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  nav {
+    padding: 0.9rem 3%;
+  }
+
+  .nav-links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .nav-links a {
+    text-align: center;
+  }
+
+  .hero-content h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-content p {
+    font-size: 1rem;
+  }
+
+  .btn-main {
+    padding: 14px 18px;
+  }
+
+  .about-flex-container,
+  .contact-links-grid {
+    flex-direction: column;
+  }
+
+  .about-text-content h2,
+  .contact-card-main h2 {
+    font-size: 2rem;
+  }
+
+  .about-features-list,
+  .feature-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .job-grid-system {
+    grid-template-columns: 1fr;
+  }
+
+  .job-card-item {
+    padding: 24px;
+  }
+
+  .modal-content-box {
+    max-width: 95%;
+    padding: 20px;
+  }
+
+  .modal-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .btn-send-application,
+  .btn-cancel-modal {
+    width: 100%;
+  }
+}
