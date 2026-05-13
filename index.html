@@ -618,23 +618,47 @@ function bulkAction(actionType) {
         alert("Lowongan Berhasil Dipublikasikan!");
       };
 
-      document.getElementById("castingForm").onsubmit = function (e) {
+      document.getElementById("castingForm").onsubmit = async function (e) {
         e.preventDefault();
-        const data = JSON.parse(localStorage.getItem("jbtb_data"));
-        data.push({
-          id: Date.now(),
-          name: document.getElementById("form-name").value,
-          email: document.getElementById("form-email").value,
-          wa: document.getElementById("form-wa").value,
-          job: document.getElementById("target-job-hidden").value,
-          photo: document.getElementById("form-photo").value,
-          porto: document.getElementById("form-portfolio").value,
-          status: "Pending",
-        });
-        localStorage.setItem("jbtb_data", JSON.stringify(data));
-        alert("Lamaran berhasil terkirim ke JBTB Casting!");
-        closeModal();
-        refreshTable();
+        
+        // Validasi input
+        const name = document.getElementById("form-name").value.trim();
+        const email = document.getElementById("form-email").value.trim();
+        const wa = document.getElementById("form-wa").value.trim();
+        const job = document.getElementById("target-job-hidden").value.trim();
+        const photo = document.getElementById("form-photo").value.trim();
+        const portfolio = document.getElementById("form-portfolio").value.trim();
+
+        if (!name || !email || !wa || !job || !photo || !portfolio) {
+          alert("Harap isi semua field!");
+          return;
+        }
+
+        try {
+          // Kirim data ke Supabase
+          const applicantData = {
+            name: name,
+            email: email,
+            wa: wa,
+            job: job,
+            photo: photo,
+            portfolio: portfolio
+          };
+
+          const result = await addApplicantToDB(applicantData);
+          
+          if (result) {
+            alert("Lamaran berhasil terkirim ke JBTB Casting!");
+            document.getElementById("castingForm").reset();
+            closeModal();
+            refreshTable();
+          } else {
+            alert("Gagal mengirim lamaran, coba lagi!");
+          }
+        } catch (error) {
+          console.error("Error saat submit aplikasi:", error);
+          alert("Terjadi kesalahan saat mengirim lamaran!");
+        }
       };
 
       function accessAdmin() {
