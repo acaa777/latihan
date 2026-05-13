@@ -1,7 +1,270 @@
 /**
- * JBTB Casting Website - Utility Functions
- * Script untuk mengelola data, validasi, dan interaksi UI
+ * JBTB Casting Website - Supabase Integration & Utility Functions
+ * Script untuk mengelola data dengan Supabase + localStorage fallback
  */
+
+// ==================== KONFIGURASI SUPABASE ====================
+
+// Ganti dengan URL dan Anon Key dari dashboard Supabase (Settings > API)
+const SUPABASE_URL = 'https://your-project.supabase.co';
+const SUPABASE_KEY = 'your-anon-key-here';
+
+// Inisialisasi Supabase client (pastikan script tag Supabase sudah dimuat)
+let supabaseClient = null;
+
+if (typeof window.supabase !== 'undefined') {
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} else {
+  console.warn("Supabase tidak tersedia, menggunakan localStorage fallback");
+}
+
+// ==================== JOB MANAGEMENT (Database) ====================
+
+/**
+ * Mengambil semua lowongan dari Supabase atau localStorage
+ */
+async function getJobsFromDB() {
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('jobs')
+        .select('*')
+        .eq('is_active', true)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error("Gagal ambil data lowongan dari Supabase:", error.message);
+      return getJobsFromStorage();
+    }
+  }
+  return getJobsFromStorage();
+}
+
+/**
+ * Menambah lowongan baru ke Supabase atau localStorage
+ */
+async function addJobToDB(jobData) {
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('jobs')
+        .insert([
+          {
+            title: jobData.title,
+            rate: jobData.rate,
+            requirements: jobData.requirements,
+            description: jobData.description || "",
+            is_active: true
+          }
+        ])
+        .select();
+
+      if (error) throw error;
+      return data[0];
+    } catch (error) {
+      console.error("Gagal tambah lowongan ke Supabase:", error.message);
+      return addJob(jobData);
+    }
+  }
+  return addJob(jobData);
+}
+
+/**
+ * Update lowongan di Supabase atau localStorage
+ */
+async function updateJobInDB(jobId, jobData) {
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('jobs')
+        .update({
+          title: jobData.title,
+          rate: jobData.rate,
+          requirements: jobData.requirements,
+          description: jobData.description
+        })
+        .eq('id', jobId)
+        .select();
+
+      if (error) throw error;
+      return data[0];
+    } catch (error) {
+      console.error("Gagal update lowongan di Supabase:", error.message);
+      return updateJob(jobId, jobData);
+    }
+  }
+  return updateJob(jobId, jobData);
+}
+
+/**
+ * Hapus lowongan dari Supabase atau localStorage
+ */
+async function deleteJobFromDB(jobId) {
+  if (supabaseClient) {
+    try {
+      const { error } = await supabaseClient
+        .from('jobs')
+        .delete()
+        .eq('id', jobId);
+
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.error("Gagal hapus lowongan dari Supabase:", error.message);
+      deleteJob(jobId);
+      return false;
+    }
+  }
+  deleteJob(jobId);
+  return true;
+}
+
+// ==================== APPLICANT MANAGEMENT (Database) ====================
+
+/**
+ * Mengambil semua data pelamar dari Supabase atau localStorage
+ */
+async function getApplicantsFromDB() {
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('applicants')
+        .select('*')
+        .order('applied_date', { ascending: false });
+
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error("Gagal ambil data pelamar dari Supabase:", error.message);
+      return getApplicantsFromStorage();
+    }
+  }
+  return getApplicantsFromStorage();
+}
+
+/**
+ * Menambah data pelamar baru ke Supabase atau localStorage
+ */
+async function addApplicantToDB(applicantData) {
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('applicants')
+        .insert([
+          {
+            name: applicantData.name,
+            email: applicantData.email,
+            wa: applicantData.wa,
+            job_applied: applicantData.job,
+            photo_link: applicantData.photo || "",
+            portfolio_link: applicantData.portfolio || "",
+            status: 'Pending'
+          }
+        ])
+        .select();
+
+      if (error) throw error;
+      return data[0];
+    } catch (error) {
+      console.error("Gagal tambah pelamar ke Supabase:", error.message);
+      return addApplicant(applicantData);
+    }
+  }
+  return addApplicant(applicantData);
+}
+
+/**
+ * Update Status Pelamar di Supabase atau localStorage
+ */
+async function updateApplicantStatusDB(id, newStatus) {
+  if (supabaseClient) {
+    try {
+      const { data, error } = await supabaseClient
+        .from('applicants')
+        .update({ status: newStatus })
+        .eq('id', id)
+        .select();
+
+      if (error) throw error;
+      return data[0];
+    } catch (error) {
+      console.error("Gagal update status pelamar di Supabase:", error.message);
+      return updateApplicantStatus(id, newStatus);
+    }
+  }
+  return updateApplicantStatus(id, newStatus);
+}
+
+/**
+ * Hapus pelamar dari Supabase atau localStorage
+ */
+async function deleteApplicantFromDB(applicantId) {
+  if (supabaseClient) {
+    try {
+      const { error } = await supabaseClient
+        .from('applicants')
+        .delete()
+        .eq('id', applicantId);
+
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.error("Gagal hapus pelamar dari Supabase:", error.message);
+      deleteApplicant(applicantId);
+      return false;
+    }
+  }
+  deleteApplicant(applicantId);
+  return true;
+}
+
+/**
+ * Bulk update status pelamar di Supabase atau localStorage
+ */
+async function bulkUpdateStatusDB(applicantIds, newStatus) {
+  if (supabaseClient) {
+    try {
+      const { error } = await supabaseClient
+        .from('applicants')
+        .update({ status: newStatus })
+        .in('id', applicantIds);
+
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.error("Gagal bulk update di Supabase:", error.message);
+      bulkUpdateApplicantStatus(applicantIds, newStatus);
+      return false;
+    }
+  }
+  bulkUpdateApplicantStatus(applicantIds, newStatus);
+  return true;
+}
+
+/**
+ * Bulk delete pelamar dari Supabase atau localStorage
+ */
+async function bulkDeleteFromDB(applicantIds) {
+  if (supabaseClient) {
+    try {
+      const { error } = await supabaseClient
+        .from('applicants')
+        .delete()
+        .in('id', applicantIds);
+
+      if (error) throw error;
+      return true;
+    } catch (error) {
+      console.error("Gagal bulk delete di Supabase:", error.message);
+      bulkDeleteApplicants(applicantIds);
+      return false;
+    }
+  }
+  bulkDeleteApplicants(applicantIds);
+  return true;
+}
 
 // ==================== STORAGE UTILITIES ====================
 
