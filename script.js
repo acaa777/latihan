@@ -6,13 +6,13 @@
 // ==================== KONFIGURASI SUPABASE ====================
 
 // Ganti dengan URL dan Anon Key dari dashboard Supabase (Settings > API)
-const SUPABASE_URL = 'https://your-project.supabase.co';
-const SUPABASE_KEY = 'your-anon-key-here';
+const SUPABASE_URL = "https://your-project.supabase.co";
+const SUPABASE_KEY = "your-anon-key-here";
 
 // Inisialisasi Supabase client (pastikan script tag Supabase sudah dimuat)
 let supabaseClient = null;
 
-if (typeof window.supabase !== 'undefined') {
+if (typeof window.supabase !== "undefined") {
   supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 } else {
   console.warn("Supabase tidak tersedia, menggunakan localStorage fallback");
@@ -27,10 +27,10 @@ async function getJobsFromDB() {
   if (supabaseClient) {
     try {
       const { data, error } = await supabaseClient
-        .from('jobs')
-        .select('*')
-        .eq('is_active', true)
-        .order('created_at', { ascending: false });
+        .from("jobs")
+        .select("*")
+        .eq("is_active", true)
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
       return data || [];
@@ -49,15 +49,15 @@ async function addJobToDB(jobData) {
   if (supabaseClient) {
     try {
       const { data, error } = await supabaseClient
-        .from('jobs')
+        .from("jobs")
         .insert([
           {
             title: jobData.title,
             rate: jobData.rate,
             requirements: jobData.requirements,
             description: jobData.description || "",
-            is_active: true
-          }
+            is_active: true,
+          },
         ])
         .select();
 
@@ -78,14 +78,14 @@ async function updateJobInDB(jobId, jobData) {
   if (supabaseClient) {
     try {
       const { data, error } = await supabaseClient
-        .from('jobs')
+        .from("jobs")
         .update({
           title: jobData.title,
           rate: jobData.rate,
           requirements: jobData.requirements,
-          description: jobData.description
+          description: jobData.description,
         })
-        .eq('id', jobId)
+        .eq("id", jobId)
         .select();
 
       if (error) throw error;
@@ -105,9 +105,9 @@ async function deleteJobFromDB(jobId) {
   if (supabaseClient) {
     try {
       const { error } = await supabaseClient
-        .from('jobs')
+        .from("jobs")
         .delete()
-        .eq('id', jobId);
+        .eq("id", jobId);
 
       if (error) throw error;
       return true;
@@ -130,9 +130,9 @@ async function getApplicantsFromDB() {
   if (supabaseClient) {
     try {
       const { data, error } = await supabaseClient
-        .from('applicants')
-        .select('*')
-        .order('applied_date', { ascending: false });
+        .from("applicants")
+        .select("*")
+        .order("applied_date", { ascending: false });
 
       if (error) throw error;
       return data || [];
@@ -151,7 +151,7 @@ async function addApplicantToDB(applicantData) {
   if (supabaseClient) {
     try {
       const { data, error } = await supabaseClient
-        .from('applicants')
+        .from("applicants")
         .insert([
           {
             name: applicantData.name,
@@ -160,8 +160,8 @@ async function addApplicantToDB(applicantData) {
             job_applied: applicantData.job,
             photo_link: applicantData.photo || "",
             portfolio_link: applicantData.portfolio || "",
-            status: 'Pending'
-          }
+            status: "Pending",
+          },
         ])
         .select();
 
@@ -182,9 +182,9 @@ async function updateApplicantStatusDB(id, newStatus) {
   if (supabaseClient) {
     try {
       const { data, error } = await supabaseClient
-        .from('applicants')
+        .from("applicants")
         .update({ status: newStatus })
-        .eq('id', id)
+        .eq("id", id)
         .select();
 
       if (error) throw error;
@@ -204,9 +204,9 @@ async function deleteApplicantFromDB(applicantId) {
   if (supabaseClient) {
     try {
       const { error } = await supabaseClient
-        .from('applicants')
+        .from("applicants")
         .delete()
-        .eq('id', applicantId);
+        .eq("id", applicantId);
 
       if (error) throw error;
       return true;
@@ -227,9 +227,9 @@ async function bulkUpdateStatusDB(applicantIds, newStatus) {
   if (supabaseClient) {
     try {
       const { error } = await supabaseClient
-        .from('applicants')
+        .from("applicants")
         .update({ status: newStatus })
-        .in('id', applicantIds);
+        .in("id", applicantIds);
 
       if (error) throw error;
       return true;
@@ -250,9 +250,9 @@ async function bulkDeleteFromDB(applicantIds) {
   if (supabaseClient) {
     try {
       const { error } = await supabaseClient
-        .from('applicants')
+        .from("applicants")
         .delete()
-        .in('id', applicantIds);
+        .in("id", applicantIds);
 
       if (error) throw error;
       return true;
