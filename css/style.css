@@ -67,14 +67,14 @@ nav {
 .logo-text {
   font-size: 24px;
   font-weight: bold;
-  color: white;
+  color: #ffffff;
   letter-spacing: 1px;
   font-family:
     "Arial Black", sans-serif; /* Agar terlihat tegas seperti di gambar */
 }
 
 .gold-text {
-  color: #d4af37; /* Warna emas/kuning sesuai referensi */
+  color: var(--gold); /* Warna hijau untuk CASTING */
 }
 
 /* Responsive: Kecilkan sedikit di HP */
@@ -99,24 +99,6 @@ nav {
   font-weight: 600;
   font-size: 0.9rem;
   transition: 0.3s;
-  position: relative;
-  overflow: hidden;
-}
-
-.nav-links a::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: var(--gold);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-}
-
-.nav-links a:hover::after {
-  transform: translateX(0);
 }
 
 .nav-links a:hover {
@@ -830,16 +812,22 @@ footer p {
 @media (max-width: 600px) {
   nav {
     padding: 0.9rem 3%;
+    justify-content: space-between;
   }
 
   .nav-links {
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+    width: 100%;
   }
 
   .nav-links a {
     text-align: center;
+  }
+
+  header {
+    padding: 0 3%;
   }
 
   .hero-content h1 {
@@ -852,6 +840,18 @@ footer p {
 
   .btn-main {
     padding: 14px 18px;
+  }
+
+  #about,
+  #jobs,
+  #contact,
+  .admin-main-wrapper {
+    padding: 60px 3%;
+  }
+
+  .contact-links-grid {
+    flex-direction: column;
+    gap: 18px;
   }
 
   .about-flex-container,
