@@ -6,8 +6,9 @@
 // ==================== KONFIGURASI SUPABASE ====================
 
 // Ganti dengan URL dan Anon Key dari dashboard Supabase (Settings > API)
-const SUPABASE_URL = "https://your-project.supabase.co";
-const SUPABASE_KEY = "your-anon-key-here";
+const SUPABASE_URL = "https://gcleodykkntfcxrqzbop.supabase.co";
+const SUPABASE_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdjbGVvZHlra250ZmN4cnF6Ym9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg2NjA4MjcsImV4cCI6MjA5NDIzNjgyN30.seHOYtFoU1hdVWiRQGRQxHw0MgJj2zP0lr2wqYUszg4";
 
 // Inisialisasi Supabase client (pastikan script tag Supabase sudah dimuat)
 let supabaseClient = null;
