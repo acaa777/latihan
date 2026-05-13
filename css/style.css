@@ -1,0 +1,778 @@
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap");
+
+:root {
+  --gold: #28a745;
+  --dark-bg: #0b0e14;
+  --card-bg: #161b22;
+  --white: #ffffff;
+  --gray-text: #a0a0a0;
+  --green-success: #2ecc71;
+  --red-danger: #e74c3c;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--dark-bg);
+  color: var(--white);
+  line-height: 1.6;
+}
+
+/* ===== NAVBAR ANIMATIONS ===== */
+/* NAVBAR */
+nav {
+  background: var(--card-bg);
+  padding: 1.2rem 8%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--gold);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: var(--gold);
+}
+/* Container untuk mengatur posisi sejajar */
+.logo-container {
+  display: flex;
+  align-items: center;
+}
+
+.main-logo {
+  height: 60px; /* Sesuaikan ukuran */
+  width: 60px; /* Harus sama dengan height agar bulat sempurna */
+  object-fit: cover; /* Menjaga gambar tidak gepeng saat dipaksa jadi kotak/bulat */
+  border-radius: 50%; /* Ini yang membuat jadi bulat */
+  margin-right: 15px;
+  border: 2px solid #d4af37; /* Opsional: Tambah garis tepi emas agar lebih keren */
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Gaya untuk Teks JBTBCASTING */
+.logo-text {
+  font-size: 24px;
+  font-weight: bold;
+  color: white;
+  letter-spacing: 1px;
+  font-family:
+    "Arial Black", sans-serif; /* Agar terlihat tegas seperti di gambar */
+}
+
+.gold-text {
+  color: #d4af37; /* Warna emas/kuning sesuai referensi */
+}
+
+/* Responsive: Kecilkan sedikit di HP */
+@media (max-width: 600px) {
+  .logo-text {
+    font-size: 18px;
+  }
+  .main-logo {
+    height: 40px;
+  }
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 25px;
+}
+
+.nav-links a {
+  color: var(--white);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--gold);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  transform: translateX(0);
+}
+
+.nav-links a:hover {
+  color: var(--gold);
+}
+
+.admin-link {
+  color: var(--gold) !important;
+  border: 1px solid var(--gold);
+  padding: 6px 18px;
+  border-radius: 8px;
+}
+
+/* HERO SECTION */
+header {
+  height: 80vh;
+  position: relative;
+  background: url("https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&w=1350&q=80");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  padding: 0 8%;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85));
+}
+
+.hero-content {
+  position: relative;
+  max-width: 800px;
+}
+
+.hero-tag {
+  color: var(--gold);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 20px;
+  animation: fadeInDown 0.8s ease-out 0.2s both;
+}
+
+.hero-content h1 {
+  font-size: 4rem;
+  line-height: 1.2;
+  margin-bottom: 25px;
+  font-weight: 800;
+  animation: fadeInDown 0.8s ease-out 0.4s both;
+}
+
+.hero-content h1 span {
+  color: var(--gold);
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  color: var(--gray-text);
+  margin-bottom: 40px;
+  max-width: 650px;
+}
+
+.btn-main {
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 18px 45px;
+  font-weight: 800;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 5px 15px rgba(201, 162, 39, 0.2);
+}
+
+.btn-main:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(201, 162, 39, 0.4);
+  animation: none;
+}
+
+.btn-main:active {
+  transform: translateY(-2px);
+}
+
+/* ABOUT / HISTORY */
+#about {
+  padding: 100px 8%;
+  background: #0f1218;
+}
+
+.about-flex-container {
+  display: flex;
+  gap: 60px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.about-text-content {
+  flex: 1;
+  min-width: 350px;
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.sub-title {
+  color: var(--gold);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.about-text-content h2 {
+  font-size: 2.8rem;
+  margin: 15px 0 30px;
+}
+
+.about-text-content p {
+  margin-bottom: 20px;
+  color: var(--gray-text);
+}
+
+.about-features-list {
+  margin-top: 30px;
+  display: flex;
+  gap: 30px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  color: var(--gold);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.feature-item i {
+  animation: bounce 1.5s ease-in-out infinite;
+}
+
+.about-stats-visual {
+  flex: 1;
+  display: grid;
+  gap: 20px;
+  min-width: 300px;
+  animation: slideInRight 0.8s ease-out;
+}
+
+.stat-card-box {
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  border: 1px solid #222;
+  animation: scaleIn 0.6s ease-out;
+  transition: 0.3s;
+}
+
+.stat-card-box:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(201, 162, 39, 0.2);
+  border-color: var(--gold);
+}
+
+.stat-card-box h3 {
+  font-size: 2.5rem;
+  color: var(--gold);
+  margin-bottom: 5px;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.gold-version {
+  background: var(--gold);
+  color: #000;
+}
+
+.gold-version h3 {
+  color: #000;
+}
+
+/* JOBS SECTION */
+#jobs {
+  padding: 100px 8%;
+}
+
+.section-heading-center {
+  text-align: center;
+  margin-bottom: 60px;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.section-heading-center h2 {
+  font-size: 2.5rem;
+}
+
+.gold-line {
+  width: 60px;
+  height: 4px;
+  background: var(--gold);
+  margin: 15px auto;
+  animation: slideUpRotate 0.8s ease-out;
+}
+
+.job-grid-system {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.job-card-item {
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 25px;
+  position: relative;
+  border-top: 5px solid var(--gold);
+  transition: 0.3s;
+  animation: scaleIn 0.6s ease-out;
+}
+
+.job-card-item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(201, 162, 39, 0.15);
+}
+
+.job-badge-tag {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(201, 162, 39, 0.1);
+  color: var(--gold);
+  padding: 4px 12px;
+  border-radius: 15px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  border: 1px solid var(--gold);
+}
+
+.job-fee-info {
+  color: var(--green-success);
+  font-weight: 800;
+  font-size: 1.1rem;
+  margin: 20px 0;
+}
+
+.job-requirement-list {
+  list-style: none;
+  color: var(--gray-text);
+  margin-bottom: 30px;
+}
+
+.job-requirement-list li {
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+}
+
+.btn-card-apply {
+  width: 100%;
+  background: var(--gold);
+  color: #000;
+  border: none;
+  padding: 15px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-card-apply:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(201, 162, 39, 0.3);
+}
+
+.btn-card-apply:active {
+  transform: scale(0.98);
+}
+
+/* ADMIN DASHBOARD */
+.admin-navbar {
+  background: var(--card-bg);
+  padding: 1rem 8%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--gold);
+}
+
+.btn-logout-admin {
+  background: var(--red-danger);
+  color: #fff;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.admin-main-wrapper {
+  padding: 50px 8%;
+}
+
+.admin-content-card {
+  background: var(--card-bg);
+  padding: 40px;
+  border-radius: 25px;
+  margin-bottom: 40px;
+  border: 1px solid #333;
+  animation: slideInLeft 0.8s ease-out;
+}
+
+.card-title-header h3 {
+  color: var(--gold);
+  margin-bottom: 30px;
+  font-size: 1.4rem;
+}
+
+/* ADMIN FORM */
+.vertical-admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group-item label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+}
+
+.form-group-item input,
+.form-group-item textarea {
+  background: var(--dark-bg);
+  border: 1px solid #333;
+  padding: 15px;
+  color: #fff;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.form-group-item input:focus,
+.form-group-item textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+  box-shadow: 0 0 15px rgba(201, 162, 39, 0.2);
+  transform: scale(1.02);
+}
+
+.btn-submit-loker-green {
+  background: var(--green-success);
+  color: #fff;
+  border: none;
+  padding: 18px;
+  border-radius: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  font-size: 1rem;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.btn-submit-loker-green:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(46, 204, 113, 0.3);
+}
+
+.btn-submit-loker-green:active {
+  transform: translateY(0);
+}
+
+/* ADMIN - LOWONGAN AKTIF (Sesuai Screenshot Kotak Hitam) */
+.admin-job-grid-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.admin-loker-card {
+  background: #0b0e14;
+  padding: 20px 30px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-left: 4px solid var(--gold);
+  transition: 0.3s;
+  animation: slideInLeft 0.6s ease-out;
+}
+
+.admin-loker-card:hover {
+  background: #1a1f28;
+  transform: translateX(10px);
+  box-shadow: 0 10px 20px rgba(201, 162, 39, 0.1);
+}
+
+.loker-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.loker-text strong {
+  font-size: 1.1rem;
+  color: #ffffff;
+}
+
+.loker-rate-text {
+  font-size: 0.9rem;
+  color: #a0a0a0;
+}
+
+.btn-loker-delete {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.2s;
+}
+
+.btn-loker-delete:hover {
+  transform: scale(1.15) rotate(10deg);
+  box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+}
+
+.btn-loker-delete:active {
+  transform: scale(0.95);
+}
+
+/* TABLE ADMIN (Daftar Pelamar) */
+.admin-table-overflow {
+  overflow-x: auto;
+  margin-top: 20px;
+}
+
+.admin-data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-data-table th {
+  text-align: left;
+  padding: 15px;
+  border-bottom: 2px solid #333;
+  color: var(--gold);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.admin-data-table td {
+  padding: 15px;
+  border-bottom: 1px solid #222;
+  font-size: 0.85rem;
+}
+
+.admin-data-table tbody tr {
+  transition: 0.3s;
+}
+
+.admin-data-table tbody tr:hover {
+  background: rgba(201, 162, 39, 0.1);
+  transform: scale(1.01);
+}
+
+.action-cell {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.action-cell button {
+  border: none;
+  color: white;
+  width: 35px;
+  height: 35px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-action-check {
+  background: #2ecc71;
+}
+.btn-action-reject {
+  background: #f39c12;
+}
+.btn-action-delete {
+  background: #e74c3c;
+}
+
+.stat-Rejected {
+  background: #e74c3c;
+  color: #fff;
+}
+
+/* CONTACT US SECTION (Center) */
+#contact {
+  padding: 80px 8%;
+  text-align: center;
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.contact-card-main h2 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  animation: fadeInDown 0.8s ease-out;
+}
+
+.contact-card-main p {
+  color: var(--gray-text);
+  margin-bottom: 40px;
+}
+
+.contact-links-grid {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  flex-wrap: wrap;
+}
+
+.contact-links-grid a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: 0.3s;
+  animation: scaleIn 0.6s ease-out;
+  display: flex;
+  align-items: center;
+}
+
+.contact-links-grid a i {
+  color: var(--gold);
+  margin-right: 10px;
+  font-size: 1.3rem;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.contact-links-grid a:hover {
+  color: var(--gold);
+  transform: scale(1.1);
+}
+
+/* FOOTER (Center) */
+footer {
+  width: 100%;
+  padding: 40px 0;
+  background: var(--dark-bg);
+  text-align: center;
+  border-top: 1px solid #222;
+}
+
+footer p {
+  color: #444;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+/* MODAL */
+.modal-fixed-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.modal-content-box {
+  background: #1c222d;
+  width: 90%;
+  max-width: 500px;
+  padding: 30px;
+  border-radius: 20px;
+  border: 1px solid #333;
+}
+
+.modal-content-box h2 {
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.modal-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* Input Nama, Link Foto, dan Porto tetap Full Width */
+.full-width {
+  grid-column: span 2;
+}
+
+.input-field {
+  margin-bottom: 10px;
+}
+
+.input-field input {
+  background: #0b0e14;
+  border: 1px solid #222;
+  padding: 12px;
+  color: #fff;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.btn-send-application {
+  flex: 2;
+  background: #2ecc71; /* Hijau */
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-cancel-modal {
+  flex: 1;
+  background: #444; /* Abu-abu */
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* Menyembunyikan link admin dari pandangan umum */
+.admin-link {
+  display: none !important;
+}

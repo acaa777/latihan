@@ -1,0 +1,699 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JBTB Casting - Talent Management Agency</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <div id="main-site">
+      <nav>
+        <div class="logo-container">
+    <a href="index.html" style="display: flex; align-items: center; text-decoration: none;">
+        <!-- Logo Gambar -->
+        <img src="logo.jpeg" alt="Logo J-BtB" class="main-logo">
+        
+        <!-- Logo Teks -->
+        <span class="logo-text">JBTB<span class="gold-text">CASTING</span></span>
+    </a>
+</div>
+        <ul class="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">History</a></li>
+          <li><a href="#jobs">Casting</a></li>
+          <li><a href="#contact">Contact</a></li>
+          <li><a href="#" onclick="accessAdmin()" class="admin-link">Admin Login</a></li>
+        </ul>
+      </nav>
+
+      <header id="home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <div class="hero-tag">Professional Talent & Extras Management</div>
+          <h1>
+            Tumbuh tuh bareng-bareng
+            Gak <span>sendiri-sendiri</span>
+          </h1>
+          <p>
+            Agensi casting terpercaya sejak 2022. Kami menghubungkan talent & extras
+            unik dengan industri film, iklan, dan digital content berskala
+            nasional maupun internasional.
+          </p>
+          <div class="hero-btns">
+            <button
+              onclick="
+                document
+                  .getElementById('jobs')
+                  .scrollIntoView({ behavior: 'smooth' })
+              "
+              class="btn-main"
+            >
+              Lihat Open Casting
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <section id="about">
+        <div class="container">
+          <div class="about-flex-container">
+            <div class="about-text-content">
+              <span class="sub-title">Our History</span>
+              <h2>Perjalanan JBTB Casting</h2>
+              <p>
+                Didirikan pada tahun 2022 di Sawangan Depok,
+                <strong>JBTB Casting</strong> lahir dari visi sederhana:
+                memberikan panggung yang setara bagi setiap talenta berbakat di
+                Indonesia. Berawal dari komunitas kecil seni peran, kami
+                berkembang menjadi agensi profesional yang dipercaya oleh
+                berbagai rumah produksi besar.
+              </p>
+              <p>
+                Kami percaya bahwa setiap karakter memiliki "nyawa" tersendiri.
+                Itulah mengapa proses kurasi kami dilakukan secara mendalam
+                untuk memastikan setiap talenta yang kami salurkan benar-benar
+                menjadi representasi terbaik.
+              </p>
+              <div class="about-features-list">
+                <div class="feature-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Kurasi Profesional</span>
+                </div>
+                <div class="feature-item">
+                  <i class="fas fa-check-circle"></i>
+                  <span>Jaringan Produksi Luas</span>
+                </div>
+              </div>
+            </div>
+            <div class="about-stats-visual">
+              <div class="stat-card-box">
+                <h3>300.000+</h3>
+                <p>Talent & Extras Present</p>
+              </div>
+              <div class="stat-card-box gold-version">
+                <h3>200+</h3>
+                <p>Proyek Iklan & Film</p>
+              </div>
+              <div class="stat-card-box">
+                <h3>50+</h3>
+                <p>Kota Jangkauan</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="jobs">
+        <div class="section-heading-center">
+          <h2>Open Casting Terbaru</h2>
+          <div class="gold-line"></div>
+          <p>
+            Temukan peluang karir akting dan modeling sesuai dengan karaktermu.
+          </p>
+        </div>
+        <div id="job-list-display" class="job-grid-system"></div>
+      </section>
+
+      <section id="contact">
+        <div class="contact-card-main">
+          <h2>Contact Us</h2>
+          <p>
+            Hubungi management kami untuk keperluan casting project atau
+            konsultasi talenta.
+          </p>
+          <div class="contact-links-grid">
+            <a href="https://www.instagram.com/jbtb.casting?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank">
+              <i class="fab fa-instagram"></i> Instagram @jbtb.casting
+            </a>
+            <a href="https://wa.me/62895383280288" target="_blank">
+              <i class="fab fa-whatsapp"></i> WhatsApp Management
+            </a>
+            <a href="mailto:official@jbtbcasting.com">
+              <i class="far fa-envelope"></i> official@jbtbcasting.com
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <script>
+        // Fungsi rahasia: Tekan Shift + A untuk login admin
+document.addEventListener('keydown', function(e) {
+    if (e.shiftKey && e.key === 'A') {
+        accessAdmin();
+    }
+});
+        // Update fungsi refreshTable khusus di bagian Aksi Kelola
+        function refreshTable() {
+          const data = JSON.parse(localStorage.getItem("jbtb_data"));
+          const tbody = document.getElementById("table-body");
+          tbody.innerHTML = data
+            .map(
+              (item) => `
+            <tr>
+                <td><strong>${item.name}</strong></td>
+                <td>
+                    <div class="contact-cell">
+                        <a href="mailto:${item.email}" class="link-email">
+                            <i class="far fa-envelope"></i> ${item.email}
+                        </a>
+                        <a href="https://wa.me/${item.wa}" target="_blank" class="link-wa">
+                            <i class="fab fa-whatsapp"></i> ${item.wa}
+                        </a>
+                    </div>
+                </td>
+                <td><span class="job-label-tag">${item.job}</span></td>
+                <td>
+                    <div class="file-cell">
+                        <a href="${item.photo}" target="_blank" class="btn-view-file">
+                            <i class="fas fa-image"></i> Foto
+                        </a>
+                        <a href="${item.porto}" target="_blank" class="btn-view-file porto">
+                            <i class="fas fa-video"></i> Porto
+                        </a>
+                    </div>
+                </td>
+                <td><span class="status-pill stat-${item.status}">${item.status}</span></td>
+                <td>
+                    <div class="action-cell">
+                        <button onclick="updateApplicantStatus(${item.id}, 'Accepted')" class="btn-action-check" title="Terima">
+                            <i class="fas fa-check"></i>
+                        </button>
+                        <button onclick="updateApplicantStatus(${item.id}, 'Rejected')" class="btn-action-reject" title="Tolak">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        <button onclick="deleteApplicantData(${item.id})" class="btn-action-delete" title="Hapus">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `,
+            )
+            .join("");
+        }
+
+        // Fungsi tambahan untuk status Rejected (agar tombol tolak bekerja)
+        function updateApplicantStatus(id, newStatus) {
+          let list = JSON.parse(localStorage.getItem("jbtb_data"));
+          list = list.map((i) =>
+            i.id === id ? { ...i, status: newStatus } : i,
+          );
+          localStorage.setItem("jbtb_data", JSON.stringify(list));
+          refreshTable();
+        }
+      </script>
+
+      </section> <footer>
+        <p>&copy; 2026 JBTB Casting Management. All Rights Reserved.</p>
+    </footer>
+</div>
+
+    <div id="admin-dashboard" style="display: none">
+      <nav class="admin-navbar">
+        <div class="logo">ADMIN<span>PANEL</span></div>
+        <div class="admin-nav-actions">
+          <button onclick="logout()" class="btn-logout-admin">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
+      </nav>
+
+      <div class="admin-main-wrapper">
+        <div class="admin-content-card">
+          <div class="card-title-header">
+            <h3><i class="fas fa-plus-circle"></i> Tambah Lowongan</h3>
+          </div>
+          <form id="lokerForm" class="vertical-admin-form">
+            <div class="form-group-item">
+              <label>Judul Lowongan</label>
+              <input
+                type="text"
+                id="job-title"
+                placeholder="Nama Project atau Peran"
+                required
+              />
+            </div>
+            <div class="form-group-item">
+              <label>Rate Fee / Gaji (IDR)</label>
+              <input
+                type="text"
+                id="job-rate"
+                placeholder="Contoh: Rp 2.500.000"
+                required
+              />
+            </div>
+            <div class="form-group-item">
+              <label>Persyaratan & Kriteria</label>
+              <textarea
+                id="job-req"
+                rows="5"
+                placeholder="Pisahkan dengan koma (Contoh: Pria, 20th, Tinggi 175cm)"
+                required
+              ></textarea>
+            </div>
+            <button type="submit" class="btn-submit-loker-green">
+              SIMPAN LOWONGAN KE DATABASE
+            </button>
+          </form>
+
+          <div class="active-jobs-list">
+            <h4>Lowongan Aktif Saat Ini</h4>
+            <div id="admin-job-list" class="admin-job-grid-cards"></div>
+          </div>
+        </div>
+
+        <div class="admin-table-overflow">
+          
+    <!-- Tombol Aksi Massal -->
+    <div id="massActions" style="display: none; margin: 15px 0; gap: 10px;">
+        <button onclick="bulkAction('Accepted')" class="btn-action-check" style="width: auto; padding: 10px;">Terima Terpilih</button>
+        <button onclick="bulkAction('Rejected')" class="btn-action-reject" style="width: auto; padding: 10px;">Tolak Terpilih</button>
+        <button onclick="bulkAction('Delete')" class="btn-action-delete" style="width: auto; padding: 10px;">Hapus Terpilih</button>
+    </div>
+
+    <table class="admin-data-table">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                <th>Nama Pelamar</th>
+                <th>Kontak</th>
+                <th>Job Tujuan</th>
+                <th>Status</th>
+                <th>Aksi Kelola</th>
+            </tr>
+        </thead>
+        <tbody id="table-body">
+            <!-- Data akan diisi oleh renderTable() -->
+        </tbody>
+    </table>
+</div>
+        </div>
+      </div>
+    </div>
+
+   <div id="applyModal" class="modal-fixed-overlay">
+    <div class="modal-content-box">
+        <div class="modal-header-top">
+            <h3>Formulir Pendaftaran Casting</h3>
+        </div>
+        <form id="castingForm">
+            <input type="hidden" id="target-job-hidden" />
+            <p class="apply-info-text">
+                Melamar untuk posisi: <strong id="targetJobText"></strong>
+            </p>
+
+            <div class="modal-form-grid">
+                <div class="input-field full-width">
+                    <input type="text" id="form-name" placeholder="Nama Lengkap" required>
+                </div>
+                <div class="input-field">
+                    <input type="email" id="form-email" placeholder="Email" required>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="form-wa" placeholder="WhatsApp" required>
+                </div>
+                <div class="input-field">
+                    <input type="number" id="form-age" placeholder="Umur" required>
+                </div>
+                <div class="input-field">
+                    <input type="text" id="form-height" placeholder="Tinggi (cm)" required>
+                </div>
+                <div class="input-field full-width">
+                    <input type="text" id="form-photo" placeholder="Link Foto" required>
+                </div>
+                <div class="input-field full-width">
+                    <input type="text" id="form-portfolio" placeholder="Link Portofolio" required>
+                </div>
+            </div>
+            <div class="modal-actions">
+                <!-- Pastikan type="submit" agar menonaktifkan refresh otomatis dan menjalankan fungsi JS -->
+                <button type="submit" class="btn-send-application">Kirim Profil</button>
+                <button type="button" class="btn-cancel-modal" onclick="closeModal()">Batal</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+    <script>
+      // --- DATABASE / LOCAL STORAGE LOGIC ---
+      const defaultApplicants = [
+        {
+          id: 1001,
+          name: "Reza Rahadian",
+          email: "reza.rahadian@talent.com",
+          wa: "081234567890",
+          job: "Pemeran Utama Film",
+          photo: "https://google.com/search?q=photo",
+          porto: "https://youtube.com/watch?v=reza",
+          status: "Pending",
+        },
+        {
+          id: 1002,
+          name: "Chelsea Islan",
+          email: "chelsea.islan@talent.com",
+          wa: "089988776655",
+          job: "Pemeran Utama Film",
+          photo: "https://google.com/search?q=photo",
+          porto: "https://youtube.com/watch?v=chelsea",
+          status: "Pending",
+        },
+      ];
+
+      if (!localStorage.getItem("jbtb_jobs")) {
+        localStorage.setItem(
+          "jbtb_jobs",
+          JSON.stringify([
+            {
+              id: 1,
+              title: "Pemeran Utama Film",
+              rate: "Rp 5.000.000 - 15.000.000",
+              req: ["Pria/Wanita", "Usia 20-30th", "Bisa Akting Menangis"],
+            },
+          ]),
+        );
+      }
+      if (!localStorage.getItem("jbtb_data")) {
+        localStorage.setItem("jbtb_data", JSON.stringify(defaultApplicants));
+      }
+
+      // --- RENDER FUNCTIONS ---
+      function renderFrontJobs() {
+        const jobs = JSON.parse(localStorage.getItem("jbtb_jobs"));
+        const container = document.getElementById("job-list-display");
+        container.innerHTML = jobs
+          .map(
+            (j) => `
+            <div class="job-card-item">
+                <div class="job-badge-tag">Open</div>
+                <h3>${j.title}</h3>
+                <div class="job-fee-info">
+                    <i class="fas fa-coins"></i> ${j.rate}
+                </div>
+                <ul class="job-requirement-list">
+                    ${j.req.map((r) => `<li><i class="fas fa-check"></i> ${r}</li>`).join("")}
+                </ul>
+                <button onclick="openModal('${j.title}')" class="btn-card-apply">
+                    Lamar Sekarang
+                </button>
+            </div>
+        `,
+          )
+          .join("");
+      }
+
+    function renderAdminJobs() {
+        const jobs = JSON.parse(localStorage.getItem('jbtb_jobs'));
+        const container = document.getElementById('admin-job-list');
+        container.innerHTML = jobs.map(j => `
+            <div class="admin-loker-card">
+                <div class="loker-text">
+                    <strong>${j.title}</strong>
+                    <span class="loker-rate-text">${j.rate}</span>
+                </div>
+                <button onclick="deleteJob(${j.id})" class="btn-loker-delete" title="Hapus Lowongan">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        `).join('');
+    }
+
+      function refreshTable() {
+    const data = JSON.parse(localStorage.getItem("jbtb_data")) || [];
+    const tbody = document.getElementById("table-body");
+    if (!tbody) return;
+
+    tbody.innerHTML = data.map((item) => `
+        <tr>
+            <!-- Checkbox untuk Select All -->
+            <td>
+                <input type="checkbox" class="rowCheckbox" data-id="${item.id}" onclick="toggleMassActionMenu()">
+            </td>
+            <td><strong>${item.name}</strong></td>
+            <td>
+                <div class="contact-cell">
+                    <a href="mailto:${item.email}" class="link-email">
+                        <i class="far fa-envelope"></i> ${item.email}
+                    </a>
+                    <a href="https://wa.me/${item.wa}" target="_blank" class="link-wa">
+                        <i class="fab fa-whatsapp"></i> ${item.wa}
+                    </a>
+                </div>
+            </td>
+            <td><span class="job-label-tag">${item.job}</span></td>
+            <td>
+                <div class="file-cell">
+                    <a href="${item.photo}" target="_blank" class="btn-view-file">
+                        <i class="fas fa-image"></i> Foto
+                    </a>
+                    <a href="${item.porto}" target="_blank" class="btn-view-file porto">
+                        <i class="fas fa-video"></i> Porto
+                    </a>
+                </div>
+            </td>
+            <td><span class="status-pill stat-${item.status}">${item.status}</span></td>
+            <td>
+                <div class="action-cell">
+                    <button onclick="updateApplicantStatus(${item.id}, 'Accepted')" class="btn-action-check" title="Terima">
+                        <i class="fas fa-check"></i>
+                    </button>
+                    <button onclick="updateApplicantStatus(${item.id}, 'Rejected')" class="btn-action-reject" title="Tolak">
+                        <i class="fas fa-times"></i>
+                    </button>
+                    <button onclick="deleteApplicantData(${item.id})" class="btn-action-delete" title="Hapus">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </td>
+        </tr>
+    `).join("");
+}
+
+// Update fungsi Bulk Action agar mencari ID yang benar
+function bulkAction(actionType) {
+    const selected = document.querySelectorAll('.rowCheckbox:checked');
+    
+    // 1. Ambil data terbaru dari localStorage
+    let list = JSON.parse(localStorage.getItem('jbtb_data')) || [];
+    
+    if (selected.length === 0) {
+        alert("Pilih pelamar terlebih dahulu!");
+        return;
+    }
+
+    if (confirm(`Apakah Anda yakin ingin melakukan aksi "${actionType}" ke ${selected.length} pelamar?`)) {
+        // 2. Ambil semua ID yang dicentang dan pastikan tipenya String/Number sesuai data
+        const selectedIds = Array.from(selected).map(cb => cb.getAttribute('data-id'));
+
+        if (actionType === 'Delete') {
+            // Filter data yang TIDAK ada di daftar ID terpilih
+            list = list.filter(item => !selectedIds.includes(String(item.id)));
+        } else {
+            // Update status untuk ID yang terpilih
+            list = list.map(item => {
+                if (selectedIds.includes(String(item.id))) {
+                    return { ...item, status: actionType };
+                }
+                return item;
+            });
+        }
+
+        // 3. Simpan kembali ke localStorage
+        localStorage.setItem('jbtb_data', JSON.stringify(list));
+        
+        // 4. Update tampilan tabel secara langsung
+        refreshTable(); 
+        
+        // 5. Reset UI
+        const selectAllCb = document.getElementById('selectAll');
+        if(selectAllCb) selectAllCb.checked = false;
+        toggleMassActionMenu();
+        
+        console.log("Data berhasil diupdate ke status:", actionType);
+    }
+}
+      
+      // --- LOGIC FUNCTIONS ---
+      function openModal(jobTitle) {
+        document.getElementById("targetJobText").innerText = jobTitle;
+        document.getElementById("target-job-hidden").value = jobTitle;
+        document.getElementById("applyModal").style.display = "flex";
+      }
+
+      function closeModal() {
+        document.getElementById("applyModal").style.display = "none";
+      }
+
+      function updateApplicantStatus(id, newStatus) {
+        let list = JSON.parse(localStorage.getItem("jbtb_data"));
+        list = list.map((i) => (i.id === id ? { ...i, status: newStatus } : i));
+        localStorage.setItem("jbtb_data", JSON.stringify(list));
+        refreshTable();
+      }
+
+      function deleteApplicantData(id) {
+        if (confirm("Hapus permanen data pelamar ini?")) {
+          let list = JSON.parse(localStorage.getItem("jbtb_data")).filter(
+            (i) => i.id !== id,
+          );
+          localStorage.setItem("jbtb_data", JSON.stringify(list));
+          refreshTable();
+        }
+      }
+
+      function deleteJob(id) {
+        if (confirm("Hapus lowongan ini dari halaman utama?")) {
+          let jobs = JSON.parse(localStorage.getItem("jbtb_jobs")).filter(
+            (j) => j.id !== id,
+          );
+          localStorage.setItem("jbtb_jobs", JSON.stringify(jobs));
+          renderAdminJobs();
+          renderFrontJobs();
+        }
+      }
+
+      document.getElementById("lokerForm").onsubmit = function (e) {
+        e.preventDefault();
+        const jobs = JSON.parse(localStorage.getItem("jbtb_jobs"));
+        jobs.push({
+          id: Date.now(),
+          title: document.getElementById("job-title").value,
+          rate: document.getElementById("job-rate").value,
+          req: document.getElementById("job-req").value.split(","),
+        });
+        localStorage.setItem("jbtb_jobs", JSON.stringify(jobs));
+        this.reset();
+        renderAdminJobs();
+        renderFrontJobs();
+        alert("Lowongan Berhasil Dipublikasikan!");
+      };
+
+      document.getElementById("castingForm").onsubmit = function (e) {
+        e.preventDefault();
+        const data = JSON.parse(localStorage.getItem("jbtb_data"));
+        data.push({
+          id: Date.now(),
+          name: document.getElementById("form-name").value,
+          email: document.getElementById("form-email").value,
+          wa: document.getElementById("form-wa").value,
+          job: document.getElementById("target-job-hidden").value,
+          photo: document.getElementById("form-photo").value,
+          porto: document.getElementById("form-portfolio").value,
+          status: "Pending",
+        });
+        localStorage.setItem("jbtb_data", JSON.stringify(data));
+        alert("Lamaran berhasil terkirim ke JBTB Casting!");
+        closeModal();
+        refreshTable();
+      };
+
+      function accessAdmin() {
+        const pass = prompt("Masukkan Password Admin:");
+        if (pass === "123") {
+          document.getElementById("main-site").style.display = "none";
+          document.getElementById("admin-dashboard").style.display = "block";
+          renderAdminJobs();
+          refreshTable();
+        } else {
+          alert("Password Salah!");
+        }
+      }
+
+      function logout() {
+        location.reload();
+      }
+
+// 1. Fungsi Toggle Select All
+function toggleSelectAll() {
+    const selectAllCb = document.getElementById('selectAll');
+    const checkboxes = document.querySelectorAll('.rowCheckbox');
+    checkboxes.forEach(cb => cb.checked = selectAllCb.checked);
+    toggleMassActionMenu();
+}
+
+// 2. Munculkan menu aksi jika ada yang dicentang
+function toggleMassActionMenu() {
+    const checkboxes = document.querySelectorAll('.rowCheckbox:checked');
+    const menu = document.getElementById('massActions');
+    if (menu) {
+        menu.style.display = checkboxes.length > 0 ? 'flex' : 'none';
+    }
+}
+
+// 3. Fungsi Aksi Massal (Sudah Diperbaiki Logikanya)
+function bulkAction(actionType) {
+    const selectedCheckboxes = document.querySelectorAll('.rowCheckbox:checked');
+    let listTalent = JSON.parse(localStorage.getItem('jbtb_data')) || [];
+    
+    if (selectedCheckboxes.length === 0) return;
+
+    const confirmMsg = `Apakah Anda yakin ingin melakukan aksi "${actionType}" ke ${selectedCheckboxes.length} pelamar?`;
+    
+    if (confirm(confirmMsg)) {
+        // Ambil semua ID yang dipilih (Konversi ke String agar aman)
+        const selectedIds = Array.from(selectedCheckboxes).map(cb => String(cb.getAttribute('data-id')));
+
+        if (actionType === 'Delete') {
+            // Hapus data yang ID-nya ada di list terpilih
+            listTalent = listTalent.filter(item => !selectedIds.includes(String(item.id)));
+        } else {
+            // Update status (Accepted/Rejected) untuk ID terpilih
+            listTalent = listTalent.map(item => {
+                if (selectedIds.includes(String(item.id))) {
+                    return { ...item, status: actionType };
+                }
+                return item;
+            });
+        }
+
+        // Simpan dan Refresh
+        localStorage.setItem('jbtb_data', JSON.stringify(listTalent));
+        refreshTable(); // Gunakan refreshTable yang sudah ada di atas
+        
+        // Reset UI
+        const selectAllCb = document.getElementById('selectAll');
+        if (selectAllCb) selectAllCb.checked = false;
+        toggleMassActionMenu();
+    }
+}
+
+// Jalankan render saat halaman siap
+window.onload = function() {
+    renderFrontJobs();
+    // Jika sedang di mode admin, pastikan tabel terisi
+    if (document.getElementById('admin-dashboard').style.display === 'block') {
+        refreshTable();
+    }
+};
+// 4. Update Fungsi Render Table (Tambahkan Checkbox di setiap baris)
+function renderTable() {
+    const talentBody = document.getElementById('talentBody');
+    const listTalent = JSON.parse(localStorage.getItem('jbtb_data')) || [];
+    talentBody.innerHTML = '';
+
+    listTalent.forEach((item, index) => {
+        const row = `
+            <tr>
+                <td><input type="checkbox" class="rowCheckbox" data-index="${index}" onclick="toggleMassActionMenu()"></td>
+                <td>${item.nama}</td>
+                <td>${item.kontak}</td>
+                <td>${item.job}</td>
+                <td>${item.status || 'Pending'}</td>
+                <td>
+                    <!-- Tombol aksi individu tetap ada di sini -->
+                </td>
+            </tr>
+        `;
+        talentBody.innerHTML += row;
+    });
+}
+
+      // Jalankan render saat halaman siap
+      window.onload = renderFrontJobs;
+    </script>
+  </body>
+</html>
