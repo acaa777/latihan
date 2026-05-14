@@ -32,7 +32,7 @@
           <li><a href="#about">History</a></li>
           <li><a href="#jobs">Casting</a></li>
           <li><a href="#contact">Contact</a></li>
-          <li><a href="#" onclick="accessAdmin()" class="admin-link">Admin Login</a></li>
+          <li><a href="#" class="admin-link">Admin Login</a></li>
         </ul>
       </nav>
 
@@ -50,14 +50,7 @@
             nasional maupun internasional.
           </p>
           <div class="hero-btns">
-            <button
-              onclick="
-                document
-                  .getElementById('jobs')
-                  .scrollIntoView({ behavior: 'smooth' })
-              "
-              class="btn-main"
-            >
+            <button class="btn-main">
               Lihat Open Casting
             </button>
           </div>
@@ -145,90 +138,6 @@
         </div>
       </section>
 
-      <script>
-        // Fungsi rahasia: Tekan Shift + A untuk login admin
-document.addEventListener('keydown', function(e) {
-    if (e.shiftKey && e.key === 'A') {
-        accessAdmin();
-    }
-});
-
-        const navToggle = document.querySelector('.nav-toggle');
-        const navLinks = document.querySelector('.nav-links');
-
-        if (navToggle && navLinks) {
-          navToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-          });
-
-          document.addEventListener('click', function(event) {
-            if (!event.target.closest('nav') && navLinks.classList.contains('active')) {
-              navLinks.classList.remove('active');
-            }
-          });
-        }
-
-        // Update fungsi refreshTable khusus di bagian Aksi Kelola
-        function refreshTable() {
-          const data = JSON.parse(localStorage.getItem("jbtb_data"));
-          const tbody = document.getElementById("table-body");
-          tbody.innerHTML = data
-            .map(
-              (item) => `
-            <tr>
-                <td><strong>${item.name}</strong></td>
-                <td>
-                    <div class="contact-cell">
-                        <a href="mailto:${item.email}" class="link-email">
-                            <i class="far fa-envelope"></i> ${item.email}
-                        </a>
-                        <a href="https://wa.me/${item.wa}" target="_blank" class="link-wa">
-                            <i class="fab fa-whatsapp"></i> ${item.wa}
-                        </a>
-                    </div>
-                </td>
-                <td><span class="job-label-tag">${item.job}</span></td>
-                <td>
-                    <div class="file-cell">
-                        <a href="${item.photo}" target="_blank" class="btn-view-file">
-                            <i class="fas fa-image"></i> Foto
-                        </a>
-                        <a href="${item.porto}" target="_blank" class="btn-view-file porto">
-                            <i class="fas fa-video"></i> Porto
-                        </a>
-                    </div>
-                </td>
-                <td><span class="status-pill stat-${item.status}">${item.status}</span></td>
-                <td>
-                    <div class="action-cell">
-                        <button onclick="updateApplicantStatus(${item.id}, 'Accepted')" class="btn-action-check" title="Terima">
-                            <i class="fas fa-check"></i>
-                        </button>
-                        <button onclick="updateApplicantStatus(${item.id}, 'Rejected')" class="btn-action-reject" title="Tolak">
-                            <i class="fas fa-times"></i>
-                        </button>
-                        <button onclick="deleteApplicantData(${item.id})" class="btn-action-delete" title="Hapus">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        `,
-            )
-            .join("");
-        }
-
-        // Fungsi tambahan untuk status Rejected (agar tombol tolak bekerja)
-        async function updateApplicantStatus(id, newStatus) {
-          try {
-            await updateApplicantStatusDB(id, newStatus);
-            await refreshTable();
-          } catch (error) {
-            console.error("Error updating status:", error);
-          }
-        }
-      </script>
-
       </section> <footer>
         <p>&copy; 2026 JBTB Casting Management. All Rights Reserved.</p>
     </footer>
@@ -238,7 +147,7 @@ document.addEventListener('keydown', function(e) {
       <nav class="admin-navbar">
         <div class="logo">ADMIN<span>PANEL</span></div>
         <div class="admin-nav-actions">
-          <button onclick="logout()" class="btn-logout-admin">
+          <button class="btn-logout-admin">
             <i class="fas fa-sign-out-alt"></i> Logout
           </button>
         </div>
@@ -301,15 +210,15 @@ document.addEventListener('keydown', function(e) {
           
     <!-- Tombol Aksi Massal -->
     <div id="massActions" style="display: none; margin: 15px 0; gap: 10px; flex-wrap: wrap;">
-        <button onclick="bulkAction('Accepted')" class="btn-mass-action btn-mass-accept">Terima Terpilih</button>
-        <button onclick="bulkAction('Rejected')" class="btn-mass-action btn-mass-reject">Tolak Terpilih</button>
-        <button onclick="bulkAction('Delete')" class="btn-mass-action btn-mass-delete">Hapus Terpilih</button>
+        <button class="btn-mass-action btn-mass-accept">Terima Terpilih</button>
+        <button class="btn-mass-action btn-mass-reject">Tolak Terpilih</button>
+        <button class="btn-mass-action btn-mass-delete">Hapus Terpilih</button>
     </div>
 
     <table class="admin-data-table">
         <thead>
             <tr>
-                <th><input type="checkbox" id="selectAll" onclick="toggleSelectAll()"></th>
+                <th><input type="checkbox" id="selectAll"></th>
                 <th>Nama Pelamar</th>
                 <th>Kontak</th>
                 <th>Job Tujuan</th>
@@ -364,7 +273,7 @@ document.addEventListener('keydown', function(e) {
             <div class="modal-actions">
                 <!-- Pastikan type="submit" agar menonaktifkan refresh otomatis dan menjalankan fungsi JS -->
                 <button type="submit" class="btn-send-application">Kirim Profil</button>
-                <button type="button" class="btn-cancel-modal" onclick="closeModal()">Batal</button>
+                <button type="button" class="btn-cancel-modal">Batal</button>
             </div>
         </form>
     </div>
@@ -372,376 +281,8 @@ document.addEventListener('keydown', function(e) {
 
     <script>
       // --- DATABASE / LOCAL STORAGE LOGIC ---
-      const defaultApplicants = [
-        {
-          id: 1001,
-          name: "Reza Rahadian",
-          email: "reza.rahadian@talent.com",
-          wa: "081234567890",
-          job: "Pemeran Utama Film",
-          photo: "https://google.com/search?q=photo",
-          porto: "https://youtube.com/watch?v=reza",
-          status: "Pending",
-        },
-        {
-          id: 1002,
-          name: "Chelsea Islan",
-          email: "chelsea.islan@talent.com",
-          wa: "089988776655",
-          job: "Pemeran Utama Film",
-          photo: "https://google.com/search?q=photo",
-          porto: "https://youtube.com/watch?v=chelsea",
-          status: "Pending",
-        },
-      ];
-
-      if (!localStorage.getItem("jbtb_jobs")) {
-        localStorage.setItem(
-          "jbtb_jobs",
-          JSON.stringify([
-            {
-              id: 1,
-              title: "Pemeran Utama Film",
-              rate: "Rp 5.000.000 - 15.000.000",
-              req: ["Pria/Wanita", "Usia 20-30th", "Bisa Akting Menangis"],
-            },
-          ]),
-        );
-      }
-      if (!localStorage.getItem("jbtb_data")) {
-        localStorage.setItem("jbtb_data", JSON.stringify(defaultApplicants));
-      }
-
-      // --- RENDER FUNCTIONS ---
-      async function renderFrontJobs() {
-        const jobs = await getJobsFromDB();
-        const container = document.getElementById("job-list-display");
-        container.innerHTML = jobs
-          .map(
-            (j) => `
-            <div class="job-card-item">
-                <div class="job-badge-tag">Open</div>
-                <h3>${j.title}</h3>
-                <div class="job-fee-info">
-                    <i class="fas fa-coins"></i> ${j.rate}
-                </div>
-                <ul class="job-requirement-list">
-                    ${(j.req || j.requirements.split(","))
-                      .slice(0, 3)
-                      .map((r) => `<li><i class="fas fa-check"></i> ${typeof r === 'string' ? r.trim() : r}</li>`)
-                      .join("")}
-                </ul>
-                <button class="btn-card-apply" data-job-id="${j.id}">
-                    Lamar Sekarang
-                </button>
-            </div>
-        `,
-          )
-          .join("");
-        
-        // Attach event listeners to all job buttons
-        document.querySelectorAll('.btn-card-apply').forEach(btn => {
-          btn.addEventListener('click', async function() {
-            const jobId = this.getAttribute('data-job-id');
-            const jobs = await getJobsFromDB();
-            const job = jobs.find(j => j.id == jobId);
-            if (job) {
-              openModal(job.title, job.description || job.desc || "");
-            }
-          });
-        });
-      }
-
-    async function renderAdminJobs() {
-        const jobs = await getJobsFromDB();
-        const container = document.getElementById('admin-job-list');
-        container.innerHTML = jobs.map(j => `
-            <div class="admin-loker-card">
-                <div class="loker-text">
-                    <strong>${j.title}</strong>
-                    <span class="loker-rate-text">${j.rate}</span>
-                </div>
-                <button onclick="deleteJobAsync(${j.id})" class="btn-loker-delete" title="Hapus Lowongan">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        `).join('');
-    }
-
-      async function refreshTable() {
-    // Ambil data dari Supabase (otomatis fallback ke localStorage jika error)
-    const data = await getApplicantsFromDB();
-    const tbody = document.getElementById("table-body");
-    if (!tbody) return;
-
-    tbody.innerHTML = data.map((item) => `
-        <tr>
-            <!-- Checkbox untuk Select All -->
-            <td>
-                <input type="checkbox" class="rowCheckbox" data-id="${item.id}" onclick="toggleMassActionMenu()">
-            </td>
-            <td><strong>${item.name}</strong></td>
-            <td>
-                <div class="contact-cell">
-                    <a href="mailto:${item.email}" class="link-email">
-                        <i class="far fa-envelope"></i> ${item.email}
-                    </a>
-                    <a href="https://wa.me/${item.wa}" target="_blank" class="link-wa">
-                        <i class="fab fa-whatsapp"></i> ${item.wa}
-                    </a>
-                </div>
-            </td>
-            <td><span class="job-label-tag">${item.job_applied || item.job}</span></td>
-            <td>
-                <div class="file-cell">
-                    <a href="${item.photo_link || item.photo}" target="_blank" class="btn-view-file">
-                        <i class="fas fa-image"></i> Foto
-                    </a>
-                    <a href="${item.portfolio_link || item.porto}" target="_blank" class="btn-view-file porto">
-                        <i class="fas fa-video"></i> Porto
-                    </a>
-                </div>
-            </td>
-            <td><span class="status-pill stat-${item.status}">${item.status}</span></td>
-            <td>
-                <div class="action-cell">
-                    <button onclick="updateApplicantStatus(${item.id}, 'Accepted')" class="btn-action-check" title="Terima">
-                        <i class="fas fa-check"></i>
-                    </button>
-                    <button onclick="updateApplicantStatus(${item.id}, 'Rejected')" class="btn-action-reject" title="Tolak">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    <button onclick="deleteApplicantData(${item.id})" class="btn-action-delete" title="Hapus">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </div>
-            </td>
-        </tr>
-    `).join("");
-}
-      
-      // --- LOGIC FUNCTIONS ---
-      function openModal(jobTitle, jobDesc) {
-        document.getElementById("targetJobText").innerText = jobTitle;
-        document.getElementById("target-job-hidden").value = jobTitle;
-        const descElement = document.getElementById("jobDescription");
-        if (descElement) {
-          descElement.innerText = jobDesc || "Deskripsi tidak tersedia.";
-        }
-        document.getElementById("applyModal").style.display = "flex";
-      }
-
-      function closeModal() {
-        document.getElementById("applyModal").style.display = "none";
-      }
-
-      async function updateApplicantStatus(id, newStatus) {
-        try {
-          await updateApplicantStatusDB(id, newStatus);
-          await refreshTable();
-        } catch (error) {
-          console.error("Error updating status:", error);
-          alert("Gagal mengupdate status pelamar!");
-        }
-      }
-
-      async function deleteApplicantData(id) {
-        if (confirm("Hapus permanen data pelamar ini?")) {
-          try {
-            await deleteApplicantFromDB(id);
-            await refreshTable();
-          } catch (error) {
-            console.error("Error deleting applicant:", error);
-            alert("Gagal menghapus data pelamar!");
-          }
-        }
-      }
-
-      async function deleteJobAsync(id) {
-        if (confirm("Hapus lowongan ini dari halaman utama?")) {
-          await deleteJobFromDB(id);
-          await renderAdminJobs();
-          await renderFrontJobs();
-        }
-      }
-
-      // Legacy function name for compatibility
-      function deleteJob(id) {
-        deleteJobAsync(id);
-      }
-
-      document.getElementById("lokerForm").onsubmit = async function (e) {
-        e.preventDefault();
-        
-        const jobData = {
-          title: document.getElementById("job-title").value,
-          rate: document.getElementById("job-rate").value,
-          requirements: document.getElementById("job-req").value,
-          description: document.getElementById("job-desc").value,
-        };
-        
-        if (!jobData.title || !jobData.rate || !jobData.requirements) {
-          alert("Harap isi semua field lowongan!");
-          return;
-        }
-        
-        try {
-          await addJobToDB(jobData);
-          this.reset();
-          await renderAdminJobs();
-          await renderFrontJobs();
-          alert("Lowongan Berhasil Dipublikasikan!");
-        } catch (error) {
-          console.error("Error saat menambah lowongan:", error);
-          alert("Gagal menambah lowongan!");
-        }
-      };
-
-      document.getElementById("castingForm").onsubmit = async function (e) {
-        e.preventDefault();
-        
-        // Validasi input
-        const name = document.getElementById("form-name").value.trim();
-        const email = document.getElementById("form-email").value.trim();
-        const wa = document.getElementById("form-wa").value.trim();
-        const job = document.getElementById("target-job-hidden").value.trim();
-        const photo = document.getElementById("form-photo").value.trim();
-        const portfolio = document.getElementById("form-portfolio").value.trim();
-
-        if (!name || !email || !wa || !job || !photo || !portfolio) {
-          alert("Harap isi semua field!");
-          return;
-        }
-
-        try {
-          // Kirim data ke Supabase
-          const applicantData = {
-            name: name,
-            email: email,
-            wa: wa,
-            job: job,
-            photo: photo,
-            portfolio: portfolio
-          };
-
-          const result = await addApplicantToDB(applicantData);
-          
-          if (result) {
-            alert("Lamaran berhasil terkirim ke JBTB Casting!");
-            document.getElementById("castingForm").reset();
-            closeModal();
-            refreshTable();
-          } else {
-            alert("Gagal mengirim lamaran, coba lagi!");
-          }
-        } catch (error) {
-          console.error("Error saat submit aplikasi:", error);
-          alert("Terjadi kesalahan saat mengirim lamaran!");
-        }
-      };
-
-      async function accessAdmin() {
-        const pass = prompt("Masukkan Password Admin:");
-        if (pass === "123") {
-          document.getElementById("main-site").style.display = "none";
-          document.getElementById("admin-dashboard").style.display = "block";
-          await renderAdminJobs();
-          await refreshTable();
-        } else {
-          alert("Password Salah!");
-        }
-      }
-
-      function logout() {
-        location.reload();
-      }
-
-// 1. Fungsi Toggle Select All
-function toggleSelectAll() {
-    const selectAllCb = document.getElementById('selectAll');
-    const checkboxes = document.querySelectorAll('.rowCheckbox');
-    checkboxes.forEach(cb => cb.checked = selectAllCb.checked);
-    toggleMassActionMenu();
-}
-
-// 2. Munculkan menu aksi jika ada yang dicentang
-function toggleMassActionMenu() {
-    const checkboxes = document.querySelectorAll('.rowCheckbox:checked');
-    const menu = document.getElementById('massActions');
-    if (menu) {
-        menu.style.display = checkboxes.length > 0 ? 'flex' : 'none';
-    }
-}
-
-// 3. Fungsi Aksi Massal (Sudah Diperbaiki Logikanya - Menggunakan Supabase)
-async function bulkAction(actionType) {
-    const selectedCheckboxes = document.querySelectorAll('.rowCheckbox:checked');
-    
-    if (selectedCheckboxes.length === 0) return;
-
-    const confirmMsg = `Apakah Anda yakin ingin melakukan aksi "${actionType}" ke ${selectedCheckboxes.length} pelamar?`;
-    
-    if (confirm(confirmMsg)) {
-        // Ambil semua ID yang dipilih
-        const selectedIds = Array.from(selectedCheckboxes).map(cb => parseInt(cb.getAttribute('data-id')));
-
-        try {
-            if (actionType === 'Delete') {
-                // Hapus data menggunakan Supabase
-                await bulkDeleteFromDB(selectedIds);
-            } else {
-                // Update status (Accepted/Rejected) menggunakan Supabase
-                await bulkUpdateStatusDB(selectedIds, actionType);
-            }
-
-            // Refresh tabel dan reset UI
-            await refreshTable();
-            
-            const selectAllCb = document.getElementById('selectAll');
-            if (selectAllCb) selectAllCb.checked = false;
-            toggleMassActionMenu();
-            
-            alert(`Aksi "${actionType}" berhasil dilakukan ke ${selectedIds.length} pelamar!`);
-        } catch (error) {
-            console.error("Error bulk action:", error);
-            alert("Gagal melakukan aksi bulk!");
-        }
-    }
-}
-
-// Jalankan render saat halaman siap
-window.onload = function() {
-    renderFrontJobs();
-    // Jika sedang di mode admin, pastikan tabel terisi
-    if (document.getElementById('admin-dashboard').style.display === 'block') {
-        refreshTable();
-    }
-};
-// 4. Update Fungsi Render Table (Tambahkan Checkbox di setiap baris)
-function renderTable() {
-    const talentBody = document.getElementById('talentBody');
-    const listTalent = JSON.parse(localStorage.getItem('jbtb_data')) || [];
-    talentBody.innerHTML = '';
-
-    listTalent.forEach((item, index) => {
-        const row = `
-            <tr>
-                <td><input type="checkbox" class="rowCheckbox" data-index="${index}" onclick="toggleMassActionMenu()"></td>
-                <td>${item.nama}</td>
-                <td>${item.kontak}</td>
-                <td>${item.job}</td>
-                <td>${item.status || 'Pending'}</td>
-                <td>
-                    <!-- Tombol aksi individu tetap ada di sini -->
-                </td>
-            </tr>
-        `;
-        talentBody.innerHTML += row;
-    });
-}
-
-      // Jalankan render saat halaman siap
-      window.onload = renderFrontJobs;
+      // Semua JavaScript logic sudah dipindahkan ke script.js
+      // File ini hanya menyimpan struktur HTML, semua handler sudah disetup di script.js
     </script>
 
     <!-- Supabase CDN -->
