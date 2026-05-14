@@ -671,9 +671,9 @@ function initializeDefaultData() {
 async function renderFrontJobs() {
   const jobs = await getJobsFromDB();
   const container = document.getElementById("job-list-display");
-  
+
   if (!container) return;
-  
+
   container.innerHTML = jobs
     .map(
       (j) => `
@@ -686,7 +686,10 @@ async function renderFrontJobs() {
           <ul class="job-requirement-list">
               ${(j.req || j.requirements.split(","))
                 .slice(0, 3)
-                .map((r) => `<li><i class="fas fa-check"></i> ${typeof r === 'string' ? r.trim() : r}</li>`)
+                .map(
+                  (r) =>
+                    `<li><i class="fas fa-check"></i> ${typeof r === "string" ? r.trim() : r}</li>`,
+                )
                 .join("")}
           </ul>
           <button class="btn-card-apply" data-job-id="${j.id}">
@@ -696,7 +699,7 @@ async function renderFrontJobs() {
     `,
     )
     .join("");
-  
+
   // Attach event listeners ke semua job buttons
   document.querySelectorAll(".btn-card-apply").forEach((btn) => {
     btn.addEventListener("click", async function () {
@@ -716,9 +719,9 @@ async function renderFrontJobs() {
 async function renderAdminJobs() {
   const jobs = await getJobsFromDB();
   const container = document.getElementById("admin-job-list");
-  
+
   if (!container) return;
-  
+
   container.innerHTML = jobs
     .map(
       (j) => `
@@ -734,7 +737,7 @@ async function renderAdminJobs() {
     `,
     )
     .join("");
-  
+
   // Attach event listeners ke delete buttons
   document.querySelectorAll(".btn-loker-delete").forEach((btn) => {
     btn.addEventListener("click", function () {
@@ -750,7 +753,7 @@ async function renderAdminJobs() {
 async function refreshTable() {
   const data = await getApplicantsFromDB();
   const tbody = document.getElementById("table-body");
-  
+
   if (!tbody) return;
 
   tbody.innerHTML = data
@@ -894,7 +897,8 @@ function openModal(jobTitle, jobDesc) {
 
   if (targetJobText) targetJobText.innerText = jobTitle;
   if (targetJobHidden) targetJobHidden.value = jobTitle;
-  if (jobDescription) jobDescription.innerText = jobDesc || "Deskripsi tidak tersedia.";
+  if (jobDescription)
+    jobDescription.innerText = jobDesc || "Deskripsi tidak tersedia.";
   if (applyModal) applyModal.style.display = "flex";
 }
 
@@ -1149,10 +1153,8 @@ function setupSelectAllListener() {
  * Setup mass action buttons
  */
 function setupMassActionButtons() {
-  const actionButtons = document.querySelectorAll(
-    ".btn-mass-action",
-  );
-  
+  const actionButtons = document.querySelectorAll(".btn-mass-action");
+
   actionButtons.forEach((btn) => {
     btn.addEventListener("click", function () {
       if (this.classList.contains("btn-mass-accept")) {
